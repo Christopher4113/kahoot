@@ -17,6 +17,7 @@
   }
 
   let code = "";
+  let msg = "";
   function connect() {
     let websocket = new WebSocket('ws://localhost:3000/ws')
     websocket.onopen = () => {
@@ -34,6 +35,7 @@
       websocket.send(`host: ${quiz._id}`)
     }
     websocket.onmessage = (event) => {
+      msg = event.data
       console.log('Received message:', event.data)
     }
   }
@@ -41,6 +43,7 @@
 </script>
 
 <Button on:click={getQuizzes}>Get Quizzes</Button>
+Message: {msg}
 
 {#if quizzes.length > 0}
   <ul>
