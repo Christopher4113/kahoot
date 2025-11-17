@@ -2,6 +2,10 @@
   import svelteLogo from './assets/svelte.svg'
   import viteLogo from '/vite.svg'
   import Counter from './lib/Counter.svelte'
+  import Button from './lib/Button.svelte';
+  import QuizCard from './lib/QuizCard.svelte';
+
+  let quizzes: {_id: string; name: string}[] = [];
   async function getQuizzes() {
     let response = await fetch('http://localhost:3000/api/quizzes')
     if (!response.ok) {
@@ -9,6 +13,7 @@
       return
     }
     let json = await response.json()
+    quizzes = json
     console.log(json)
   }
   function connect() {
@@ -25,6 +30,18 @@
 
 <button on:click={getQuizzes}>Get Quizzes</button>
 <button on:click={connect}>Connect</button>
+
+{#if quizzes.length > 0}
+  <ul>
+    {#each quizzes as quiz}
+      <QuizCard quiz = {quiz} />
+    {/each}
+  </ul>
+{/if}
+
+<Button>
+  Custom Button
+</Button>
 <main>
   <div>
     <a href="https://vite.dev" target="_blank" rel="noreferrer">
